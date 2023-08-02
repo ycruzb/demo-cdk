@@ -1,0 +1,48 @@
+type Page @aws_api_key {
+  url: String!
+  title: String!
+  category: String!
+  wordCount: Int!
+  crawledAt: AWSDate!
+}
+
+input PageInput {
+  url: String!
+  title: String!
+  category: String!
+  wordCount: Int!
+  crawledAt: AWSDate!
+}
+
+input UpdatePageInput {
+  url: String
+  title: String
+  category: String
+  wordCount: Int
+  crawledAt: AWSDate
+}
+
+type Query {
+  getAllPages: [Page]
+    @aws_api_key
+  getPagesByCategory(category: String!): [Page]
+    @aws_api_key
+}
+
+type Mutation {
+  createPage(page: PageInput!): Page
+    @aws_api_key
+  updatePage(page: UpdatePageInput!): Page
+    @aws_api_key
+  deletePage(pageId: ID!): ID
+    @aws_api_key
+}
+
+type Subscription {
+  onCreatePage: Page
+    @aws_subscribe(mutations: ["createPage"])
+  onUpdatePage: Page
+    @aws_subscribe(mutations: ["updatePage"])
+  onDeletePage: ID
+    @aws_subscribe(mutations: ["deletePage"])
+}
